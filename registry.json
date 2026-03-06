@@ -1,10 +1,10 @@
 [
   {
     "name": "mofa-skills",
-    "description": "AI-powered visual content generation (slides, cards, video, comics, infographics)",
+    "description": "AI-powered visual content generation (slides, cards, video, comics, infographics, web, research)",
     "repo": "mofa-org/mofa-skills",
-    "skills": ["mofa-slides", "mofa-cards", "mofa-video", "mofa-comic", "mofa-infographic", "mofa-fm"],
-    "requires": ["git", "node"],
-    "tags": ["ai", "pptx", "image-gen", "video", "tts", "voice-cloning"]
+    "skills": ["mofa-slides", "mofa-cards", "mofa-video", "mofa-comic", "mofa-infographic", "mofa-fm", "mofa-web", "mofa-research"],
+    "requires": ["git", "cargo"],
+    "tags": ["ai", "pptx", "image-gen", "video", "tts", "voice-cloning", "tshirt", "print", "art-deco", "matisse", "cubism", "symbolism", "lautrec", "ligne-claire", "woodcut", "web", "research"]
   }
 ]
