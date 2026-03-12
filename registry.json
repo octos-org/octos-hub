@@ -1,10 +1,34 @@
 [
   {
     "name": "mofa-skills",
-    "description": "AI-powered visual content generation (slides, cards, comics, infographics) with Gemini Batch API support",
+    "description": "AI-powered content creation suite: visual generation, TTS voice cloning, video, web scraping, research, and workflow automation",
     "repo": "mofa-org/mofa-skills",
-    "skills": ["mofa-slides", "mofa-cards", "mofa-comic", "mofa-infographic", "mofa-research"],
+    "skills": [
+      "mofa-slides",
+      "mofa-cards",
+      "mofa-comic",
+      "mofa-infographic",
+      "mofa-research",
+      "mofa-fm",
+      "mofa-video",
+      "mofa-videolizer",
+      "mofa-web",
+      "mofa-news",
+      "mofa-github",
+      "mofa-workflow"
+    ],
     "requires": ["git", "cargo"],
-    "tags": ["ai", "pptx", "image-gen", "gemini", "batch-api", "comic", "manga", "xkcd", "snoopy", "infographic", "tshirt", "print", "art-deco", "matisse", "cubism", "symbolism", "ligne-claire", "woodcut", "research"]
+    "tags": [
+      "ai", "pptx", "image-gen", "gemini", "batch-api",
+      "comic", "manga", "xkcd", "snoopy",
+      "infographic", "tshirt", "print", "art-deco", "matisse", "cubism", "symbolism", "ligne-claire", "woodcut",
+      "research", "deep-research",
+      "tts", "voice-cloning", "speech", "audio", "qwen3-tts",
+      "video", "text-to-video", "wan",
+      "web-scraping", "crawl",
+      "news", "rss",
+      "github", "issues", "pull-requests",
+      "workflow", "automation"
+    ]
   }
 ]
