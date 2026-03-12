@@ -1,7 +1,7 @@
 [
   {
     "name": "mofa-skills",
-    "description": "AI-powered content creation suite: visual generation, TTS voice cloning, video, web scraping, research, and workflow automation",
+    "description": "AI-powered content creation suite: visual generation, TTS voice cloning, research, and workflow automation",
     "repo": "mofa-org/mofa-skills",
     "skills": [
       "mofa-slides",
@@ -10,9 +10,6 @@
       "mofa-infographic",
       "mofa-research",
       "mofa-fm",
-      "mofa-video",
-      "mofa-videolizer",
-      "mofa-web",
       "mofa-news",
       "mofa-github",
       "mofa-workflow"
@@ -24,8 +21,6 @@
       "infographic", "tshirt", "print", "art-deco", "matisse", "cubism", "symbolism", "ligne-claire", "woodcut",
       "research", "deep-research",
       "tts", "voice-cloning", "speech", "audio", "qwen3-tts",
-      "video", "text-to-video", "wan",
-      "web-scraping", "crawl",
       "news", "rss",
       "github", "issues", "pull-requests",
       "workflow", "automation"
