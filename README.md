@@ -1,18 +1,18 @@
-# Skill Registry
+# Octos Hub
 
-Community skill registry for [crew](https://github.com/humanagency-org/crew-rs). Users can discover and install skills directly from the CLI.
+Community skill hub for [Octos](https://github.com/octos-org/octos). Discover and install skills directly from the CLI.
 
 ## Usage
 
 ```bash
 # Browse all available skills
-crew skills search
+octos skills search
 
 # Search by keyword
-crew skills search slides
+octos skills search slides
 
 # Install a skill package
-crew skills install user/repo
+octos skills install user/repo
 ```
 
 ## Submit Your Skills
@@ -54,3 +54,7 @@ your-repo/
     SKILL.md
     ...
 ```
+
+## Auto-Sync
+
+Skill packages can auto-sync their registry entries on CI pass. See [mofa-skills](https://github.com/mofa-org/mofa-skills) for an example using GitHub Actions + the GitHub API.
