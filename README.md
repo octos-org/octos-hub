@@ -1,5 +1,7 @@
 # Octos Hub
 
+[English](README.md) | [中文](README_CN.md)
+
 Community skill registry for [Octos](https://github.com/octos-org/octos). Browse, install, and publish skills that extend your AI agent with new capabilities.
 
 ## Quick Start
