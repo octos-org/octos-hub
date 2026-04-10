@@ -8,16 +8,26 @@
       "mofa",
       "mofa-comic",
       "mofa-fm",
+      "mofa-frame",
       "mofa-infographic",
       "mofa-pdf",
       "mofa-podcast",
+      "mofa-publish",
+      "mofa-site",
       "mofa-slides",
-      "mofa-xlsx"
+      "mofa-xlsx",
+      "mofa-youtube"
     ],
     "requires": [
       "git",
       "cargo",
-      "ominix-api"
+      "curl",
+      "gh",
+      "node",
+      "ominix-api",
+      "quarto",
+      "scp",
+      "ssh"
     ],
     "tags": [
       "ai",
