@@ -1,11 +1,10 @@
 [
   {
     "name": "mofa-skills",
-    "description": "AI-powered content creation suite: presentations, cards, comics, infographics, voice cloning, and office document processing",
+    "description": "AI-powered content creation suite: presentations, cards, comics, infographics, lesson websites, deployment workflows, voice cloning, and office document processing",
     "repo": "mofa-org/mofa-skills",
     "skills": [
       "mofa-cards",
-      "mofa",
       "mofa-comic",
       "mofa-fm",
       "mofa-frame",
@@ -40,6 +39,10 @@
       "xkcd",
       "infographic",
       "poster",
+      "website",
+      "quarto",
+      "github-pages",
+      "static-site",
       "tts",
       "voice-cloning",
       "speech",
