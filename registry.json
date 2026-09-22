@@ -74,6 +74,9 @@
       "study",
       "mindmap",
       "video-overview"
-    ]
+    ],
+    "review": {
+      "status": "pending"
+    }
   }
 ]

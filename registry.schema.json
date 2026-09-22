@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/octos-org/octos-hub/main/registry.schema.json",
+  "title": "Octos Hub skill registry",
+  "type": "array",
+  "items": { "$ref": "#/$defs/entry" },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description", "repo"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "repo": {
+          "type": "string",
+          "minLength": 1,
+          "description": "GitHub path (user/repo) or full git URL"
+        },
+        "version": { "type": "string" },
+        "author": { "type": "string" },
+        "license": { "type": "string" },
+        "skills": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "requires": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "provides_tools": { "type": "boolean" },
+        "binaries": {
+          "type": "object",
+          "description": "Pre-built binaries keyed by {os}-{arch}, managed by the registry after audit",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["url", "sha256"],
+            "properties": {
+              "url": { "type": "string", "format": "uri" },
+              "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+            }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "review": { "$ref": "#/$defs/review" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "description": "Vetting record, filled in by registry reviewers — submitters omit this field",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "enum": ["pending", "reviewed"],
+          "description": "pending = listed, vetting not yet recorded; reviewed = passed the admission checklist"
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "GitHub login of the reviewer who completed the checklist"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date (YYYY-MM-DD) the review was completed"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "SHA-256 of the reviewed source archive, pinning the exact vetted content"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Detached signature over checksum; enforced once octos-org/octos#2321 lands"
+        }
+      },
+      "if": {
+        "properties": { "status": { "const": "reviewed" } }
+      },
+      "then": {
+        "required": ["reviewer", "date", "checksum"]
+      }
+    }
+  }
+}

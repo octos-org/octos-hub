@@ -251,6 +251,8 @@ Fork [octos-hub](https://github.com/octos-org/octos-hub)，在 `registry.json` �
 
 ### 注册条目字段
 
+条目会在 CI 中根据 [`registry.schema.json`](registry.schema.json) 校验。
+
 | 字段 | 必填 | 说明 |
 |------|------|------|
 | `name` | 是 | 唯一包名（小写、连字符） |
@@ -259,14 +261,56 @@ Fork [octos-hub](https://github.com/octos-org/octos-hub)，在 `registry.json` �
 | `skills` | 否 | 包中各技能的名称列表 |
 | `requires` | 否 | 所需外部工具（如 `git`、`node`、`cargo`、`python`） |
 | `tags` | 否 | 可搜索关键词（用于 `octos skills search`） |
+| `review` | 否 | 由审核者维护的审核记录——提交者请省略（见下文） |
 
 ### 第四步：审核
 
-注册团队会审核你的 PR：
-- `SKILL.md` 格式正确，包含必填前置元数据
-- 工具可执行文件正常工作（如有）
-- 无恶意代码或过多依赖
-- 描述和标签准确
+注册团队会按照[注册审核与审查](#注册审核与审查)中的准入清单审核你的 PR，
+并把审核结果记录到条目的 `review` 字段中。
+
+## 注册审核与审查
+
+被列入本注册中心意味着技能经过审查。为了支撑这一承诺，条目的审查状态
+记录在其 `review` 对象中：
+
+```json
+"review": {
+  "status": "reviewed",
+  "reviewer": "maintainer-login",
+  "date": "2026-09-22",
+  "checksum": "sha256-of-reviewed-source-archive",
+  "signature": "detached-signature-over-checksum"
+}
+```
+
+| 字段 | 说明 |
+|------|------|
+| `status` | `pending` = 已列出，但尚未记录审查；`reviewed` = 已通过下方准入清单。 |
+| `reviewer` | 完成清单的审核者 GitHub 账号。`status` 为 `reviewed` 时必填。 |
+| `date` | 完成审核的 ISO 8601 日期（`YYYY-MM-DD`）。`status` 为 `reviewed` 时必填。 |
+| `checksum` | 已审核源码归档的 SHA-256，用于锚定被审查的内容。`status` 为 `reviewed` 时必填。 |
+| `signature` | 对 `checksum` 的分离签名。在安装链签名验证落地（[octos#2321](https://github.com/octos-org/octos/issues/2321)）前保留。 |
+
+只有注册中心审核者可以设置或修改 `review`；提交者的 PR 若改动该字段会被
+拒绝。（后续可通过 CODEOWNERS 规则机械化执行。）
+
+### 准入清单
+
+将条目标记为 `reviewed` 之前，审核者需要确认：
+
+- 每个列出的技能都有格式正确、含必填前置元数据的 `SKILL.md`
+- 工具可执行文件（如有）能正常工作，由声明的来源编译或下载
+- 无恶意代码、无混淆、无过多或异常依赖
+- `requires`/`binaries` 中的每个二进制都有技能文档所说明的正当用途
+- 名称、描述和标签准确
+
+审核者随后将 `status` 置为 `reviewed`，并填入自己的账号、审核日期以及
+所审核源码的 checksum。与 `binaries` 一样，`review` 对象由注册中心维护，
+而非技能仓库。需要注意的是，由上游自动同步维护的条目，其
+`registry.json` 内容会被来源仓库重新生成，因此在同步学会透传之前，
+审核者需要在此类同步后重新补上审核记录。这些审查字段也纳入了
+SKILL.md 互操作讨论（[octos#2373](https://github.com/octos-org/octos/issues/2373)），
+以便随跨厂商技能目录流转。
 
 ## 技能加载
 
