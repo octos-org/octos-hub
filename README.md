@@ -130,15 +130,18 @@ For faster installs (skip compilation), publish platform binaries in your manife
   "binaries": {
     "darwin-aarch64": {
       "url": "https://github.com/you/repo/releases/download/v1.0.0/my-skill-darwin-aarch64.tar.gz",
-      "sha256": "abc123..."
+      "sha256": "abc123...",
+      "signature": "base64-ed25519-signature..."
     },
     "darwin-x86_64": {
       "url": "https://github.com/you/repo/releases/download/v1.0.0/my-skill-darwin-x86_64.tar.gz",
-      "sha256": "def456..."
+      "sha256": "def456...",
+      "signature": "base64-ed25519-signature..."
     },
     "linux-x86_64": {
       "url": "https://github.com/you/repo/releases/download/v1.0.0/my-skill-linux-x86_64.tar.gz",
-      "sha256": "789ghi..."
+      "sha256": "789ghi...",
+      "signature": "base64-ed25519-signature..."
     }
   },
   "tools": [ ... ]
@@ -147,7 +150,9 @@ For faster installs (skip compilation), publish platform binaries in your manife
 
 **Platform keys**: `darwin-aarch64` (Apple Silicon), `darwin-x86_64` (Intel Mac), `linux-x86_64`, `linux-aarch64`.
 
-The installer downloads the matching binary, verifies the SHA-256 hash, and extracts it. If no binary is available for the platform, it falls back to building from source.
+Remote binary installs require BOTH `sha256` and `signature`; missing or invalid proof fails closed and is never replaced by a warning or source-build fallback. A repository that ships `main` or `<skill-name>` directly must provide the same proof in the manifest's top-level `sha256` and `signature` fields (using the direct-download `-` provenance placeholders); bundling an executable does not bypass verification. The SHA-256 covers the exact downloaded archive/raw bytes. The Ed25519 signature is base64-encoded and covers the UTF-8 bytes of `octos-hub-binary-v1\0<package>\0<platform>\0<lowercase-sha256>\0<source-commit-or-->\0<reviewed-at-or-->` (with literal NUL separators). Registry artifacts sign their actual `source_commit` and `reviewed_at`; direct manifest downloads use `-` for those two fields. This binds content, package, platform and registry review epoch while allowing the URL to move to a mirror.
+
+Operators configure the out-of-band trust root with `OCTOS_HUB_TRUSTED_ED25519_KEY` (base64-encoded 32-byte Ed25519 public key). The key is deliberately not read from registry JSON, which could otherwise be replaced together with a malicious entry. Local trusted development paths are unchanged; source builds require their separate explicit operator opt-in.
 
 ## Writing a Tool in Rust
 
@@ -256,6 +261,9 @@ Fork [octos-hub](https://github.com/octos-org/octos-hub), add your entry to `reg
 | `name` | Yes | Unique package name (lowercase, hyphens) |
 | `description` | Yes | One-line description (shown in search results) |
 | `repo` | Yes | GitHub path `user/repo` |
+| `source_commit` | With binaries | Reviewed 40-character upstream commit |
+| `reviewed_at` | With binaries | RFC3339 review time; binary entries must be reviewed within 30 days |
+| `binaries` | No | Platform artifacts; every entry requires `url`, `sha256`, and `signature` |
 | `skills` | No | List of individual skill names in the package |
 | `requires` | No | External tools needed (e.g., `git`, `node`, `cargo`, `python`) |
 | `tags` | No | Searchable keywords (used by `octos skills search`) |
