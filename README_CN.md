@@ -130,15 +130,18 @@ stdout: {"output": "查询结果...", "success": true}
   "binaries": {
     "darwin-aarch64": {
       "url": "https://github.com/you/repo/releases/download/v1.0.0/my-skill-darwin-aarch64.tar.gz",
-      "sha256": "abc123..."
+      "sha256": "abc123...",
+      "signature": "base64-ed25519-signature..."
     },
     "darwin-x86_64": {
       "url": "https://github.com/you/repo/releases/download/v1.0.0/my-skill-darwin-x86_64.tar.gz",
-      "sha256": "def456..."
+      "sha256": "def456...",
+      "signature": "base64-ed25519-signature..."
     },
     "linux-x86_64": {
       "url": "https://github.com/you/repo/releases/download/v1.0.0/my-skill-linux-x86_64.tar.gz",
-      "sha256": "789ghi..."
+      "sha256": "789ghi...",
+      "signature": "base64-ed25519-signature..."
     }
   },
   "tools": [ ... ]
@@ -147,7 +150,9 @@ stdout: {"output": "查询结果...", "success": true}
 
 **平台标识**：`darwin-aarch64`（Apple Silicon）、`darwin-x86_64`（Intel Mac）、`linux-x86_64`、`linux-aarch64`。
 
-安装器下载匹配的二进制文件，验证 SHA-256 哈希后解压。如果当前平台没有预编译二进制，则回退到源码编译。
+远程二进制安装必须同时提供 `sha256` 和 `signature`；缺失或无效证明会 fail-closed，不会用 warning 或源码编译回退代替。仓库直接附带 `main` 或 `<skill-name>` 时，也必须在 manifest 顶层提供同样的 `sha256`/`signature` 证明（使用直接下载的 `-` provenance 占位）；自带可执行文件不能绕过验证。SHA-256 覆盖实际下载的 archive/raw 字节。Ed25519 签名采用 base64，覆盖 `octos-hub-binary-v1\0<package>\0<platform>\0<lowercase-sha256>\0<source-commit-or-->\0<reviewed-at-or-->` 的 UTF-8 字节（分隔符为字面 NUL）。registry artifact 签署实际 `source_commit` 与 `reviewed_at`；直接 manifest 下载的这两字段使用 `-`。这样内容、包名、平台和 registry 审查纪元都受签名约束，同时允许 URL 迁移到镜像。
+
+操作者通过 `OCTOS_HUB_TRUSTED_ED25519_KEY` 配置带外信任根（base64 编码的 32 字节 Ed25519 公钥）。公钥故意不从 registry JSON 读取，否则攻击者可以同时替换条目和公钥。本地显式可信开发路径保持不变；源码编译仍要求单独的显式 operator opt-in。
 
 ## 用 Rust 编写工具
 
@@ -256,6 +261,9 @@ Fork [octos-hub](https://github.com/octos-org/octos-hub)，在 `registry.json` �
 | `name` | 是 | 唯一包名（小写、连字符） |
 | `description` | 是 | 一行描述（显示在搜索结果中） |
 | `repo` | 是 | GitHub 路径 `user/repo` |
+| `source_commit` | 含二进制时必需 | 已审查的 40 字符上游 commit |
+| `reviewed_at` | 含二进制时必需 | RFC3339 审查时间；二进制条目须在 30 天内完成审查 |
+| `binaries` | 否 | 平台 artifact；每项必须包含 `url`、`sha256` 和 `signature` |
 | `skills` | 否 | 包中各技能的名称列表 |
 | `requires` | 否 | 所需外部工具（如 `git`、`node`、`cargo`、`python`） |
 | `tags` | 否 | 可搜索关键词（用于 `octos skills search`） |

@@ -3,6 +3,9 @@
     "name": "mofa-skills",
     "description": "AI-powered content creation suite: presentations, cards, comics, infographics, lesson websites, deployment workflows, voice cloning, and office document processing",
     "repo": "mofa-org/mofa-skills",
+    "source_commit": "d8e2beaf3db5e3a14db5fb6d6131a468b07d3121",
+    "reviewed_at": "2026-11-06T04:00:00Z",
+    "binaries": {},
     "skills": [
       "mofa-cards",
       "mofa-comic",
